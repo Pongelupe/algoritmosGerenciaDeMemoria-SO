@@ -51,6 +51,14 @@ public class DadosEntradaAlgoritmo {
 		this.sequencia.add(no);
 	}
 
+	public int getNumeroRequisicoes() {
+		return sequencia.size();
+	}
+
+	public int quantidadeProcessos() {
+		return processos.size();
+	}
+
 	public DadosEntradaAlgoritmo(int tamanhoQuadros, List<Processo> processos, String alocacao, String substituicao,
 			List<NoSequencia> sequencia) {
 		this.tamanhoQuadros = tamanhoQuadros;
