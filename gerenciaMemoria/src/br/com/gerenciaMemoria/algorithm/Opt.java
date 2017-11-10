@@ -27,7 +27,7 @@ public class Opt extends AlgoritmoDeGerencia {
 		int numQuadrosPorProcesso = -1;
 
 		if (tamanhoQuadros % 2 == 0)
-			numQuadrosPorProcesso = tamanhoQuadros / getEntrada().quantidadeProcessos();
+			numQuadrosPorProcesso = tamanhoQuadros / entrada.quantidadeProcessos();
 
 	}
 
