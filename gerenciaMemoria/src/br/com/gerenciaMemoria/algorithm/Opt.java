@@ -3,6 +3,7 @@ package br.com.gerenciaMemoria.algorithm;
 import java.util.ArrayList;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 import br.com.gerenciaMemoria.model.Processo;
 
 public class Opt extends AlgoritmoDeGerencia {
@@ -10,7 +11,7 @@ public class Opt extends AlgoritmoDeGerencia {
 	private ArrayList<Processo> memoria;
 
 	public Opt(DadosEntradaAlgoritmo entrada) {
-		super(entrada);
+		super(entrada, NomeAlgoritmo.OPT);
 		memoria = new ArrayList<Processo>(entrada.getTamanhoQuadros());
 	}
 

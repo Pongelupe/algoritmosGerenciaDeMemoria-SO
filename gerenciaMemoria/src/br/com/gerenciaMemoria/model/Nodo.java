@@ -1,12 +1,11 @@
-package br.com.gerenciaMemoria.algorithm;
+package br.com.gerenciaMemoria.model;
 
 public class Nodo {
 
 	private Integer elemento;
 	private Nodo prox;
 	private Nodo anterior;
-	
-	
+
 	public Nodo getAnterior() {
 		return anterior;
 	}
@@ -19,31 +18,20 @@ public class Nodo {
 		this.elemento = elemento;
 	}
 
-	public Integer getElemento()
-	{
+	public Integer getElemento() {
 		return elemento;
 	}
-	
-	public void setElemento(Integer elemento) 
-	{
+
+	public void setElemento(Integer elemento) {
 		this.elemento = elemento;
 	}
-	public Nodo getProx() 
-	{
+
+	public Nodo getProx() {
 		return prox;
 	}
-	
-	public void setProx(Nodo prox) 
-	{
+
+	public void setProx(Nodo prox) {
 		this.prox = prox;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

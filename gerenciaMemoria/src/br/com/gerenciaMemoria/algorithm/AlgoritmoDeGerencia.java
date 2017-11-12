@@ -1,33 +1,26 @@
 package br.com.gerenciaMemoria.algorithm;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 
 public abstract class AlgoritmoDeGerencia {
 
 	protected final DadosEntradaAlgoritmo entrada;
-	protected int hits;
-	protected final int requisicoes;
+	protected final NomeAlgoritmo nome;
 
-	public AlgoritmoDeGerencia(DadosEntradaAlgoritmo entrada) {
+	public AlgoritmoDeGerencia(DadosEntradaAlgoritmo entrada, NomeAlgoritmo nome) {
 		this.entrada = entrada;
-		this.requisicoes = entrada.getNumeroRequisicoes();
+		this.nome = nome;
 	}
 
-	abstract double getTaxaErros();
-
-	public int getHits() {
-		return hits;
-	}
-
-	public void setHits(int hits) {
-		this.hits = hits;
-	}
+	public abstract double getTaxaErros();
 
 	public DadosEntradaAlgoritmo getEntrada() {
 		return entrada;
 	}
 
-	public int getRequisicoes() {
-		return requisicoes;
+	public String getNomeAlgoritmo() {
+		return nome.name().toLowerCase();
 	}
+
 }

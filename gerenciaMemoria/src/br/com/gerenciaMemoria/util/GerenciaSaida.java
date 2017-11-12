@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GerenciaSaida {
 
@@ -27,6 +30,29 @@ public class GerenciaSaida {
 		this.lfu = lfu;
 		this.mfu = mfu;
 		this.my = my;
+	}
+
+	public GerenciaSaida(int requisicoes) {
+		this(requisicoes, 0, 0, 0, 0, 0, 0);
+	}
+
+	public void adicionarAlgoritmo(String nome, double taxa) {
+		ArrayList<Field> fields = getFields();
+
+		fields.forEach(att -> {
+			att.setAccessible(true);
+			if (att.getName().equals(nome))
+				try {
+					att.set(this, taxa);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+		});
+	}
+
+	private ArrayList<Field> getFields() {
+		Class<?> clazz = this.getClass();
+		return new ArrayList<Field>(Arrays.asList(clazz.getDeclaredFields()));
 	}
 
 	public void exportarSaida() throws FileNotFoundException, UnsupportedEncodingException {

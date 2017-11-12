@@ -1,6 +1,6 @@
 Tamanho(quadros)=3
 Processos(páginas):
-P1=15
+P1=15;
 Alocação=Igual
 Substituição=Local
 Sequência:
