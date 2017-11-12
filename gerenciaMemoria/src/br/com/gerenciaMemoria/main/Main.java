@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import br.com.gerenciaMemoria.algorithm.AlgoritmoDeGerencia;
+import br.com.gerenciaMemoria.algorithm.Lru;
 import br.com.gerenciaMemoria.algorithm.Mfu;
 import br.com.gerenciaMemoria.algorithm.Opt;
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
@@ -21,8 +22,9 @@ public class Main {
 			System.out.println("Dados inseridos:\n\n" + dadosEntrada + "\n\nSaida\n\n\n-----------");
 			Opt opt = new Opt(dadosEntrada);
 			Mfu mfu = new Mfu(dadosEntrada);
+			Lru lru = new Lru(dadosEntrada);
 
-			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(mfu, opt);
+			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(mfu, opt, lru);
 			GerenciaSaida gerenciaSaida = new GerenciaSaida(dadosEntrada.getNumeroRequisicoes());
 			preencheSaida(algoritmos, gerenciaSaida);
 
@@ -41,7 +43,7 @@ public class Main {
 	}
 
 	private static void preencheSaida(ArrayList<AlgoritmoDeGerencia> algoritmos, GerenciaSaida gerenciaSaida) {
-		algoritmos.forEach(algoritmo -> {
+		algoritmos.parallelStream().forEach(algoritmo -> {
 			double taxaErros = algoritmo.getTaxaErros();
 			String nomeAlgoritmo = algoritmo.getNomeAlgoritmo();
 			gerenciaSaida.adicionarAlgoritmo(nomeAlgoritmo, taxaErros);

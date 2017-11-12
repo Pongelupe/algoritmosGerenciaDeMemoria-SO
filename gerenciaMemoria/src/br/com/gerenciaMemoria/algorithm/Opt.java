@@ -13,19 +13,8 @@ import br.com.gerenciaMemoria.model.Processo;
 
 public class Opt extends AlgoritmoDeGerencia {
 
-	private ArrayList<Processo> memoria;
-
 	public Opt(DadosEntradaAlgoritmo entrada) {
 		super(entrada, NomeAlgoritmo.OPT);
-		memoria = new ArrayList<Processo>(entrada.getTamanhoQuadros());
-	}
-
-	private double aplicaAlgoritmo() {
-		if (entrada.getSubstituicao().equals("Global"))
-			return algoritmoSubstGlobal();
-		else
-			return algoritmoSubstLocal();
-
 	}
 
 	private double algoritmoSubstLocal() {
@@ -101,18 +90,12 @@ public class Opt extends AlgoritmoDeGerencia {
 	}
 
 	private double algoritmoSubstGlobal() {
-		if (isMemoriaCheia()) {
-		}
 		return 0;
-	}
-
-	private boolean isMemoriaCheia() {
-		return memoria.size() == entrada.getTamanhoQuadros();
 	}
 
 	@Override
 	public double getTaxaErros() {
-		return aplicaAlgoritmo();
+		return entrada.getSubstituicao().equals("Global") ? algoritmoSubstGlobal() : algoritmoSubstLocal();
 	}
 
 }
