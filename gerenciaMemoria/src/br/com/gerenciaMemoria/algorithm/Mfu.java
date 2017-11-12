@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
 import br.com.gerenciaMemoria.model.Fila;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 
 public class Mfu extends AlgoritmoDeGerencia {
@@ -14,12 +15,111 @@ public class Mfu extends AlgoritmoDeGerencia {
 		super(entrada, NomeAlgoritmo.MFU);
 	}
 
+	
+	public double taxaErroGlobal(){
+		int totalErros=0;
+		
+		HashMap<String,ArrayList<Integer>> dadosFila= new HashMap<>();
+		HashMap<String, HashMap<Integer,Integer>> frequencia= new HashMap<>();
+		
+		Fila fila= new Fila(entrada.getTamanhoQuadros());
+		
+		for(int i=0;i<entrada.getProcessos().size();i++)
+		{
+			dadosFila.put(entrada.getProcessos().get(i).getNome(), new ArrayList<Integer>());
+			frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<Integer,Integer>());
+		}
+		
+		for(int i=0;i<entrada.getSequencia().size();i++)
+		{
+			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
+			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+			
+			if(dadosFila.get(nomeProcesso).contains(pagAcessada)==true)
+			{
+				int freq=frequencia.get(nomeProcesso).get(pagAcessada);
+				frequencia.get(nomeProcesso).put(pagAcessada, freq++);
+			}
+			else 
+			{
+				totalErros++;
+				if(fila.isFull()==false)
+				{
+					fila.add(pagAcessada);
+					dadosFila.get(nomeProcesso).add(pagAcessada);
+					frequencia.get(nomeProcesso).put(pagAcessada,0);
+				}
+				else 
+				{
+					//se Todos Com A MESMA FREQUENCIA
+					if(this.frequency(frequencia, nomeProcesso)==true)
+					{
+						int pagRemovida=fila.remove();
+						dadosFila.get(nomeProcesso).remove(dadosFila.get(nomeProcesso).indexOf(pagRemovida));
+						frequencia.get(nomeProcesso).remove(pagRemovida);
+						
+						fila.add(pagAcessada);
+						dadosFila.get(nomeProcesso).add(pagAcessada);
+						frequencia.get(nomeProcesso).put(pagAcessada,0);
+					}
+					
+					// Alguem pagina possui frequencia maior
+					else
+					{
+						int pagRemovida=fila.remove(retorne(frequencia,nomeProcesso));
+						dadosFila.get(nomeProcesso).remove(dadosFila.get(nomeProcesso).indexOf(pagRemovida));
+						frequencia.get(nomeProcesso).remove(pagRemovida);
+						
+						fila.add(pagAcessada);
+						dadosFila.get(nomeProcesso).add(pagAcessada);
+						frequencia.get(nomeProcesso).put(pagAcessada, 0);
+					}
+	
+				}
+	
+			}
+			
+		}
+	
+		return (double)totalErros/entrada.getSequencia().size();	
+	}
+	
+	// Alocacao igual substituição local
+	
 	private double taxaErroIgual() {
 		int totalErros = 0;
-		int totalQuadros = entrada.getTamanhoQuadros() / entrada.getProcessos().size();
+		int totalQuadros = 0;
 		HashMap<String, Fila> hash = new HashMap<>();
 		HashMap<String, HashMap<Integer, Integer>> frequencia = new HashMap<>();
-
+		
+		if(entrada.getAlocacao().equals("Igual"))
+		{
+			totalQuadros = entrada.getTamanhoQuadros()/entrada.getProcessos().size();
+			for (int i = 0; i < entrada.getProcessos().size(); i++) 
+			{
+				hash.put(entrada.getProcessos().get(i).getNome(), new Fila(totalQuadros));
+				frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
+			}	
+		}
+		else if(entrada.getAlocacao().equals("Proporcional"))
+		{
+			int totalPaginas=0;
+			
+			for(int i=0;i<entrada.getProcessos().size();i++)
+			{
+				totalPaginas+=entrada.getProcessos().get(i).getNumPaginas();	
+			}
+			
+			for (int i = 0; i < entrada.getProcessos().size(); i++) 
+			{
+				totalQuadros= (entrada.getProcessos().get(i).getNumPaginas()/totalPaginas)*entrada.getTamanhoQuadros();
+				
+				hash.put(entrada.getProcessos().get(i).getNome(), new Fila(totalQuadros));
+				frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
+			}	
+		
+		}
+		
 		for (int i = 0; i < entrada.getProcessos().size(); i++) {
 			hash.put(entrada.getProcessos().get(i).getNome(), new Fila(totalQuadros));
 			frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
@@ -53,7 +153,6 @@ public class Mfu extends AlgoritmoDeGerencia {
 						frequencia.get(nomeProcesso).put(pagAcessada, 0);
 					}
 				}
-
 			} else {
 
 				int freq = frequencia.get(nomeProcesso).get(pagAcessada);
@@ -110,7 +209,7 @@ public class Mfu extends AlgoritmoDeGerencia {
 
 	@Override
 	public double getTaxaErros() {
-		return taxaErroIgual();
+		return this.taxaErroIgual();
 	}
 
 }
