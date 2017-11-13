@@ -21,6 +21,6 @@ public class Lru extends AlgoritmoDeGerencia {
 
 	@Override
 	public double getTaxaErros() {
-		return entrada.getSubstituicao().equals("Global") ? algoritmoSubstGlobal() : algoritmoSubstLocal();
+		return isSubstituicaoGlobal() ? algoritmoSubstGlobal() : algoritmoSubstLocal();
 	}
 }

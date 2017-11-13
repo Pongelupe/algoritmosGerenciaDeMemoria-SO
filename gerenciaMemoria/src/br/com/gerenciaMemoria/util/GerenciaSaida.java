@@ -58,7 +58,7 @@ public class GerenciaSaida {
 	public void exportarSaida() throws FileNotFoundException, UnsupportedEncodingException {
 
 		String saida = gerarSaida(new StringBuilder());
-		System.out.println(saida);
+		System.out.println(saida + "\n-----------");
 
 		PrintWriter writer = new PrintWriter(new File("saida.txt"), "UTF-8");
 		writer.println(saida);

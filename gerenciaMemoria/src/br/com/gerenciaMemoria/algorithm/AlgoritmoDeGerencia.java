@@ -23,4 +23,17 @@ public abstract class AlgoritmoDeGerencia {
 		return nome.name().toLowerCase();
 	}
 
+	public boolean isAlocacaoIgual() {
+		return entrada.getAlocacao().equals("Igual");
+	}
+
+	public boolean isSubstituicaoGlobal() {
+		return entrada.getSubstituicao().equals("Global");
+	}
+
+	public int getNumPaginasProcessoProporcional(int requisicoes, int tamanhoQuadros, int numPaginasProcesso) {
+		int numPags = (numPaginasProcesso / requisicoes) * tamanhoQuadros;
+		return numPags < 0 ? 1 : numPags;
+	}
+
 }

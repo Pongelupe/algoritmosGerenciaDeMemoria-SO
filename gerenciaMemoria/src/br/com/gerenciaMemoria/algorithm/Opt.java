@@ -22,14 +22,17 @@ public class Opt extends AlgoritmoDeGerencia {
 		final int tamanhoQuadros = entrada.getTamanhoQuadros();
 		int quantidadeProcessos = entrada.quantidadeProcessos();
 		List<Processo> processos = entrada.getProcessos();
+		int requisicoes = entrada.getSequencia().size();
 
+		HashMap<String, Integer> mapNumQuadros = new HashMap<>();
 		int numQuadrosPorProcesso = tamanhoQuadros / quantidadeProcessos;
 
 		HashMap<String, List<Integer>> mapProcessos = new HashMap<>();
 		HashMap<String, List<Integer>> memoriaLocal = new HashMap<>();
 
 		for (int i = 0; i < quantidadeProcessos; i++) {
-			String nomeProcesso = processos.get(i).getNome();
+			Processo processo = processos.get(i);
+			String nomeProcesso = processo.getNome();
 
 			LinkedList<Integer> queue = new LinkedList<Integer>();
 
@@ -38,16 +41,20 @@ public class Opt extends AlgoritmoDeGerencia {
 						queue.add(no.getPaginaAcessada());
 					});
 
+			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso
+					: getNumPaginasProcessoProporcional(requisicoes, tamanhoQuadros, processo.getNumPaginas());
 			mapProcessos.put(nomeProcesso, queue);
 			memoriaLocal.put(nomeProcesso, new ArrayList<Integer>(numQuadrosPorProcesso));
+			mapNumQuadros.put(nomeProcesso, numQuadrosPorProcesso);
 		}
 
-		for (int i = 0; i < entrada.getSequencia().size(); i++) {
+		for (int i = 0; i < requisicoes; i++) {
 			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
 			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
 
 			List<Integer> filaTotal = mapProcessos.get(nomeProcesso);
 			List<Integer> memoriaProcesso = memoriaLocal.get(nomeProcesso);
+			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso : mapNumQuadros.get(nomeProcesso);
 
 			if (memoriaProcesso.size() == numQuadrosPorProcesso) {
 				if (!memoriaProcesso.contains(pagAcessada)) {
@@ -65,7 +72,7 @@ public class Opt extends AlgoritmoDeGerencia {
 			filaTotal.remove(0);
 		}
 
-		return (double) totalErros / entrada.getSequencia().size();
+		return (double) totalErros / requisicoes;
 
 	}
 
@@ -95,7 +102,7 @@ public class Opt extends AlgoritmoDeGerencia {
 
 	@Override
 	public double getTaxaErros() {
-		return entrada.getSubstituicao().equals("Global") ? algoritmoSubstGlobal() : algoritmoSubstLocal();
+		return isSubstituicaoGlobal() ? algoritmoSubstGlobal() : algoritmoSubstLocal();
 	}
 
 }
