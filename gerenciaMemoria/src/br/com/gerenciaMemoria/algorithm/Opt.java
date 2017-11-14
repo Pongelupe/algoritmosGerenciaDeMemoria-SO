@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
-import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 import br.com.gerenciaMemoria.model.Processo;
 
@@ -101,15 +100,6 @@ public class Opt extends AlgoritmoDeGerencia {
 				memoria.add(pagAcessada);
 			}
 		}
-		// ArrayList<Integer> sequencia = new ArrayList<Integer>();
-		// sequenciaNos.forEach(no -> sequencia.add(no.getPaginaAcessada()));
-		//
-		// sequenciaNos.forEach(no -> {
-		// int pagAcessada = no.getPaginaAcessada();
-		// sequencia.remove(0);
-		// decideQualTirar(sequencia, pagAcessada, memoria);
-		//
-		// });
 
 		return (double) totalErros / requisicoes;
 	}
