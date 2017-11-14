@@ -8,21 +8,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 import br.com.gerenciaMemoria.model.Processo;
 
 public class Opt extends AlgoritmoDeGerencia {
+
+	private int totalErros = 0;
+	private final int tamanhoQuadros = entrada.getTamanhoQuadros();
+	private int quantidadeProcessos = entrada.quantidadeProcessos();
+	private List<Processo> processos = entrada.getProcessos();
+	private int requisicoes = entrada.getSequencia().size();
 
 	public Opt(DadosEntradaAlgoritmo entrada) {
 		super(entrada, NomeAlgoritmo.OPT);
 	}
 
 	private double algoritmoSubstLocal() {
-		int totalErros = 0;
-		final int tamanhoQuadros = entrada.getTamanhoQuadros();
-		int quantidadeProcessos = entrada.quantidadeProcessos();
-		List<Processo> processos = entrada.getProcessos();
-		int requisicoes = entrada.getSequencia().size();
 
 		HashMap<String, Integer> mapNumQuadros = new HashMap<>();
 		int numQuadrosPorProcesso = tamanhoQuadros / quantidadeProcessos;
@@ -56,6 +58,8 @@ public class Opt extends AlgoritmoDeGerencia {
 			List<Integer> memoriaProcesso = memoriaLocal.get(nomeProcesso);
 			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso : mapNumQuadros.get(nomeProcesso);
 
+			filaTotal.remove(0);
+
 			if (memoriaProcesso.size() == numQuadrosPorProcesso) {
 				if (!memoriaProcesso.contains(pagAcessada)) {
 					totalErros++;
@@ -69,11 +73,45 @@ public class Opt extends AlgoritmoDeGerencia {
 				memoriaProcesso.add(pagAcessada);
 			}
 
-			filaTotal.remove(0);
 		}
 
 		return (double) totalErros / requisicoes;
 
+	}
+
+	private double algoritmoSubstGlobal() {
+		ArrayList<Integer> memoria = new ArrayList<Integer>(tamanhoQuadros);
+		ArrayList<Integer> fila = new ArrayList<Integer>();
+		entrada.getSequencia().forEach(no -> fila.add(no.getPaginaAcessada()));
+
+		for (int i = 0; i < requisicoes; i++) {
+			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+
+			fila.remove(0);
+
+			if (memoria.size() == tamanhoQuadros) {
+				if (!memoria.contains(pagAcessada)) {
+					totalErros++;
+					int paginaRemovida = decideQualTirar(fila, pagAcessada, memoria);
+					memoria.remove(paginaRemovida);
+					memoria.add(pagAcessada);
+				}
+			} else {
+				totalErros++;
+				memoria.add(pagAcessada);
+			}
+		}
+		// ArrayList<Integer> sequencia = new ArrayList<Integer>();
+		// sequenciaNos.forEach(no -> sequencia.add(no.getPaginaAcessada()));
+		//
+		// sequenciaNos.forEach(no -> {
+		// int pagAcessada = no.getPaginaAcessada();
+		// sequencia.remove(0);
+		// decideQualTirar(sequencia, pagAcessada, memoria);
+		//
+		// });
+
+		return (double) totalErros / requisicoes;
 	}
 
 	private int decideQualTirar(List<Integer> fila, int pagAcessada, List<Integer> memoria) {
@@ -94,10 +132,6 @@ public class Opt extends AlgoritmoDeGerencia {
 		Integer indexOnMap = distancias.get(distancias.size() - 1);
 
 		return memoria.indexOf(distanciasProcessos.get(indexOnMap));
-	}
-
-	private double algoritmoSubstGlobal() {
-		return 0;
 	}
 
 	@Override

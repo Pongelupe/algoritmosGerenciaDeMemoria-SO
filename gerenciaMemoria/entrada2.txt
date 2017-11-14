@@ -2,7 +2,7 @@ Tamanho(quadros)=3
 Processos(páginas):
 P1=15;
 Alocação=Igual
-Substituição=Local
+Substituição=Global
 Sequência:
 P1,7
 P1,0
