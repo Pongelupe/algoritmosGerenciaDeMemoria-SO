@@ -32,8 +32,9 @@ public abstract class AlgoritmoDeGerencia {
 	}
 
 	public int getNumPaginasProcessoProporcional(int requisicoes, int tamanhoQuadros, int numPaginasProcesso) {
-		int numPags = (numPaginasProcesso / requisicoes) * tamanhoQuadros;
-		return numPags < 0 ? 1 : numPags;
+		double coefiente = (double) numPaginasProcesso / requisicoes;
+		int numPags = (int) (coefiente * tamanhoQuadros);
+		return numPags <= 0 ? 1 : numPags;
 	}
 
 }
