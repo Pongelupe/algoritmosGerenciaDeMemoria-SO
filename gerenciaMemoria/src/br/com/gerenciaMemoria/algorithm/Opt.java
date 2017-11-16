@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 import br.com.gerenciaMemoria.model.Processo;
 
@@ -68,8 +69,10 @@ public class Opt extends AlgoritmoDeGerencia {
 				}
 
 			} else {
-				totalErros++;
-				memoriaProcesso.add(pagAcessada);
+				if (!memoriaProcesso.contains(pagAcessada)) {
+					totalErros++;
+					memoriaProcesso.add(pagAcessada);
+				}
 			}
 
 		}
@@ -79,12 +82,12 @@ public class Opt extends AlgoritmoDeGerencia {
 	}
 
 	private double algoritmoSubstGlobal() {
-		ArrayList<Integer> memoria = new ArrayList<Integer>(tamanhoQuadros);
+		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
 		ArrayList<Integer> fila = new ArrayList<Integer>();
 		entrada.getSequencia().forEach(no -> fila.add(no.getPaginaAcessada()));
 
 		for (int i = 0; i < requisicoes; i++) {
-			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+			NoSequencia pagAcessada = entrada.getSequencia().get(i);
 
 			fila.remove(0);
 
@@ -96,16 +99,18 @@ public class Opt extends AlgoritmoDeGerencia {
 					memoria.add(pagAcessada);
 				}
 			} else {
-				totalErros++;
-				memoria.add(pagAcessada);
+				if (!memoria.contains(pagAcessada)) {
+					totalErros++;
+					memoria.add(pagAcessada);
+				}
 			}
 		}
 
 		return (double) totalErros / requisicoes;
 	}
 
-	private int decideQualTirar(List<Integer> fila, int pagAcessada, List<Integer> memoria) {
-		HashMap<Integer, Integer> distanciasProcessos = new HashMap<Integer, Integer>();
+	private <T> int decideQualTirar(List<Integer> fila, T pagAcessada, List<T> memoria) {
+		HashMap<Integer, T> distanciasProcessos = new HashMap<Integer, T>();
 		ArrayList<Integer> distancias = new ArrayList<Integer>();
 		memoria.forEach(p -> {
 			if (fila.contains(p)) {

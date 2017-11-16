@@ -7,6 +7,7 @@ import java.util.Arrays;
 import br.com.gerenciaMemoria.algorithm.AlgoritmoDeGerencia;
 import br.com.gerenciaMemoria.algorithm.Lru;
 import br.com.gerenciaMemoria.algorithm.Mfu;
+import br.com.gerenciaMemoria.algorithm.My;
 import br.com.gerenciaMemoria.algorithm.Opt;
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
 import br.com.gerenciaMemoria.util.GerenciaEntradas;
@@ -15,16 +16,17 @@ import br.com.gerenciaMemoria.util.GerenciaSaida;
 public class Main {
 
 	public static void main(String[] args) {
-		GerenciaEntradas gerenciaEntradas = new GerenciaEntradas("entrada2.txt");
+		GerenciaEntradas gerenciaEntradas = new GerenciaEntradas("entradaEric.txt");
 		try {
 			final DadosEntradaAlgoritmo dadosEntrada = gerenciaEntradas.getDadosEntrada();
 
-			System.out.println("Dados inseridos:\n\n" + dadosEntrada + "\n\nSaida\n\n\n-----------");
+			System.out.println("Dados inseridos:\n\n" + dadosEntrada + "\n\nSaida\n\n-----------");
 			Opt opt = new Opt(dadosEntrada);
 			Mfu mfu = new Mfu(dadosEntrada);
 			Lru lru = new Lru(dadosEntrada);
+			My my = new My(dadosEntrada);
 
-			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(mfu, opt, lru);
+			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(opt, lru, my, mfu);
 			GerenciaSaida gerenciaSaida = new GerenciaSaida(dadosEntrada.getNumeroRequisicoes());
 			preencheSaida(algoritmos, gerenciaSaida);
 
