@@ -69,14 +69,19 @@ public class GerenciaSaida {
 	private String gerarSaida(StringBuilder sb) {
 		sb.append("Requisições=" + requisicoes);
 		sb.append("\nTaxasDeErros:");
-		sb.append("\nFIFO=" + formatter.format(fifo));
-		sb.append("\nOPT=" + formatter.format(opt));
-		sb.append("\nLRU=" + formatter.format(lru));
-		sb.append("\nLFU=" + formatter.format(lfu));
-		sb.append("\nMFU=" + formatter.format(mfu));
-		sb.append("\nMY=" + formatter.format(my));
+		sb.append("\nFIFO=" + formatOutput(fifo));
+		sb.append("\nOPT=" + formatOutput(opt));
+		sb.append("\nLRU=" + formatOutput(lru));
+		sb.append("\nLFU=" + formatOutput(lfu));
+		sb.append("\nMFU=" + formatOutput(mfu));
+		sb.append("\nMY=" + formatOutput(my));
 
 		return sb.toString().replaceAll("\\.", ",");
+	}
+
+	private String formatOutput(double taxaErro) {
+		String stringFormatted = formatter.format(taxaErro);
+		return stringFormatted.length() < 4 ? stringFormatted.concat("0") : stringFormatted;
 	}
 
 }

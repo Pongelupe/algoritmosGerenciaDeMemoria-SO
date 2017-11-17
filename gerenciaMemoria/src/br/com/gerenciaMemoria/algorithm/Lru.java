@@ -64,9 +64,7 @@ public class Lru extends AlgoritmoDeGerencia {
 					mapFrequenciaAcesso.put(pagAcessada, 0);
 
 				} else {
-					// HIT case
 					mapFrequenciaAcesso.put(pagAcessada, 0);
-					System.out.println("HIT @ " + i + " " + noSequencia);
 				}
 
 			} else {
@@ -76,7 +74,6 @@ public class Lru extends AlgoritmoDeGerencia {
 					mapFrequenciaAcesso.put(pagAcessada, 0);
 				} else {
 					mapFrequenciaAcesso.put(pagAcessada, 0);
-					System.out.println("HIT @ " + i + " " + noSequencia);
 				}
 			}
 
