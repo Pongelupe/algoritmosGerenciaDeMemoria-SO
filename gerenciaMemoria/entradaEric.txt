@@ -3,7 +3,7 @@ Processos(páginas):
 P1=5
 P2=4
 P3=5;
-Alocação=Proporcional
+Alocação=Igual
 Substituição=Local
 Sequência:
 P1,1

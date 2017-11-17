@@ -192,7 +192,7 @@ public class Mfu extends AlgoritmoDeGerencia {
 
 	@Override
 	public double getTaxaErros() {
-		return entrada.getSubstituicao().equals("Global") ? this.taxaErroGlobal() : this.taxaErroIgual();
+		return isSubstituicaoGlobal() ? this.taxaErroGlobal() : this.taxaErroIgual();
 	}
 
 }

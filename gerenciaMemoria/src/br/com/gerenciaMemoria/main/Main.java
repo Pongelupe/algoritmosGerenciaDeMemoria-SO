@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import br.com.gerenciaMemoria.algorithm.AlgoritmoDeGerencia;
+import br.com.gerenciaMemoria.algorithm.Fifo;
 import br.com.gerenciaMemoria.algorithm.Lru;
-import br.com.gerenciaMemoria.algorithm.Mfu;
 import br.com.gerenciaMemoria.algorithm.My;
 import br.com.gerenciaMemoria.algorithm.Opt;
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
@@ -22,11 +22,12 @@ public class Main {
 
 			System.out.println("Dados inseridos:\n\n" + dadosEntrada + "\n\nSaida\n\n-----------");
 			Opt opt = new Opt(dadosEntrada);
-			Mfu mfu = new Mfu(dadosEntrada);
+			// Mfu mfu = new Mfu(dadosEntrada);
 			Lru lru = new Lru(dadosEntrada);
 			My my = new My(dadosEntrada);
+			Fifo fifo = new Fifo(dadosEntrada);
 
-			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(opt, lru, my, mfu);
+			ArrayList<AlgoritmoDeGerencia> algoritmos = addAllAlgoritmos(opt, lru, my, fifo);
 			GerenciaSaida gerenciaSaida = new GerenciaSaida(dadosEntrada.getNumeroRequisicoes());
 			preencheSaida(algoritmos, gerenciaSaida);
 

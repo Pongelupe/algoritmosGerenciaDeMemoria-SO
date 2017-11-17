@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 import br.com.gerenciaMemoria.model.Processo;
 
@@ -40,8 +41,9 @@ public class Lru extends AlgoritmoDeGerencia {
 		}
 
 		for (int i = 0; i < requisicoes; i++) {
-			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
-			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+			NoSequencia noSequencia = entrada.getSequencia().get(i);
+			String nomeProcesso = noSequencia.getProcesso();
+			int pagAcessada = noSequencia.getPaginaAcessada();
 
 			List<Integer> memoriaProcesso = memoriaLocal.get(nomeProcesso);
 			Map<Integer, Integer> mapFrequenciaAcesso = mapFreqProcessos.get(nomeProcesso);
@@ -52,14 +54,19 @@ public class Lru extends AlgoritmoDeGerencia {
 			if (memoriaProcesso.size() == numQuadrosPorProcesso) {
 				if (!memoriaProcesso.contains(pagAcessada)) {
 					totalErros++;
-					memoriaProcesso.remove(mapFrequenciaAcesso.entrySet().stream()
-							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey());
+					Integer key = mapFrequenciaAcesso.entrySet().stream()
+							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+					memoriaProcesso.remove(key);
+
+					mapFrequenciaAcesso.remove(key);
 
 					memoriaProcesso.add(pagAcessada);
+					mapFrequenciaAcesso.put(pagAcessada, 0);
 
 				} else {
 					// HIT case
 					mapFrequenciaAcesso.put(pagAcessada, 0);
+					System.out.println("HIT @ " + i + " " + noSequencia);
 				}
 
 			} else {
@@ -69,6 +76,7 @@ public class Lru extends AlgoritmoDeGerencia {
 					mapFrequenciaAcesso.put(pagAcessada, 0);
 				} else {
 					mapFrequenciaAcesso.put(pagAcessada, 0);
+					System.out.println("HIT @ " + i + " " + noSequencia);
 				}
 			}
 
