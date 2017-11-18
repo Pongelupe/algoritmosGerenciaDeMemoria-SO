@@ -11,10 +11,10 @@ import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
 import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 
-public class Mfu extends AlgoritmoDeGerencia {
+public class Lfu extends AlgoritmoDeGerencia {
 
-	public Mfu(DadosEntradaAlgoritmo entrada) {
-		super(entrada, NomeAlgoritmo.MFU);
+	public Lfu(DadosEntradaAlgoritmo entrada) {
+		super(entrada, NomeAlgoritmo.LFU);
 	}
 
 	public boolean frequency(HashMap<String, TreeMap<Integer,Integer>> frequencia)
@@ -105,13 +105,10 @@ public class Mfu extends AlgoritmoDeGerencia {
 						frequencia.get(processoRemovido).remove(pagRemovida);
 						tempoEntrada.get(processoRemovido).remove(pagRemovida);
 						
-						
 						frequencia.get(nomeProcesso).put(pagAcessada,0);
 						filaPaginas.add(pagAcessada);
 						tempoEntrada.get(nomeProcesso).put(pagAcessada,i);
 						filaProcessos.add(nomeProcesso);
-						
-						
 				
 					} 
 					else
@@ -146,10 +143,10 @@ public class Mfu extends AlgoritmoDeGerencia {
 				
 			}
 			
-
+	
 		}
 		
-			return (double) totalErros / entrada.getSequencia().size();
+		return (double) totalErros / entrada.getSequencia().size();
 
 	}
 		
@@ -270,7 +267,7 @@ public class Mfu extends AlgoritmoDeGerencia {
 		for (Integer i : freq.keySet()) {
 			a.add(freq.get(i));
 		}
-		
+			
 		int primeiro = a.get(0);
 		for (Integer i : a) {
 			if (i != primeiro) {
@@ -292,10 +289,10 @@ public class Mfu extends AlgoritmoDeGerencia {
 			a.add(freq.get(i));
 		}
 
-		int maiorFrequencia=Collections.max(a);
+		int menorFrequencia=Collections.min(a);
 		TreeMap<Integer,Integer> t= new TreeMap<>();
 		for (Integer i : freq.keySet()) {
-			if (freq.get(i) == maiorFrequencia) {
+			if (freq.get(i) == menorFrequencia) {
 				t.put(timeEntry.get(i), i);
 			}
 
