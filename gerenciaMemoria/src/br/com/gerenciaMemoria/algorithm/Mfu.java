@@ -16,112 +16,91 @@ public class Mfu extends AlgoritmoDeGerencia {
 		super(entrada, NomeAlgoritmo.MFU);
 	}
 
-	public boolean frequency(Queue<Integer> fila)
-	{
-		boolean teste=false;
-		if(Collections.max(fila)==Collections.min(fila))
-		{
+	public boolean frequency(Queue<Integer> fila) {
+		boolean teste = false;
+		if (Collections.max(fila) == Collections.min(fila)) {
 			System.out.println("Passei aqui");
-			teste=true;
-			
+			teste = true;
+
 		}
 		return teste;
-		
+
 	}
-	
-	
-	
+
 	public double taxaErroGlobal() {
 		int totalErros = 0;
 		/*
-		HashMap<String, ArrayList<Integer>> dadosFila = new HashMap<>();
-		HashMap<String, HashMap<Integer, Integer>> frequencia = new HashMap<>();
-		HashMap<String, HashMap<Integer,Integer>> tempoEntrada = new HashMap<>(); 
-		*/
-		
-		LinkedList<Integer> filaPaginas= new LinkedList<>();
-		LinkedList<String> filaProcessos= new LinkedList<>();
-		LinkedList<Integer> filaFrequencia=new LinkedList<>();
-		
-	/*
-		for (int i = 0; i < entrada.getProcessos().size(); i++) {
-			dadosFila.put(entrada.getProcessos().get(i).getNome(), new ArrayList<>());
-			frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
-			tempoEntrada.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
-		}
-	*/
+		 * HashMap<String, ArrayList<Integer>> dadosFila = new HashMap<>();
+		 * HashMap<String, HashMap<Integer, Integer>> frequencia = new HashMap<>();
+		 * HashMap<String, HashMap<Integer,Integer>> tempoEntrada = new HashMap<>();
+		 */
+
+		LinkedList<Integer> filaPaginas = new LinkedList<>();
+		LinkedList<String> filaProcessos = new LinkedList<>();
+		LinkedList<Integer> filaFrequencia = new LinkedList<>();
+
+		/*
+		 * for (int i = 0; i < entrada.getProcessos().size(); i++) {
+		 * dadosFila.put(entrada.getProcessos().get(i).getNome(), new ArrayList<>());
+		 * frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
+		 * tempoEntrada.put(entrada.getProcessos().get(i).getNome(), new HashMap<>()); }
+		 */
 		for (int i = 0; i < entrada.getSequencia().size(); i++) {
 			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
 			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
 
-			if ((filaPaginas.contains(pagAcessada) == false) &&(filaProcessos.indexOf(filaPaginas.indexOf(pagAcessada))==filaPaginas.indexOf(pagAcessada))) 
-			{
+			if ((filaPaginas.contains(pagAcessada) == false)
+					&& (filaProcessos.indexOf(filaPaginas.indexOf(pagAcessada)) == filaPaginas.indexOf(pagAcessada))) {
 				totalErros++;
 
-				if (filaPaginas.size()<entrada.getTamanhoQuadros()) 
-				{
+				if (filaPaginas.size() < entrada.getTamanhoQuadros()) {
 
-					//dadosFila.get(nomeProcesso).add(pagAcessada);
-					//frequencia.get(nomeProcesso).put(pagAcessada, 0);
-					//tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+					// dadosFila.get(nomeProcesso).add(pagAcessada);
+					// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+					// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
 					filaPaginas.add(pagAcessada);
 					filaProcessos.add(nomeProcesso);
 					filaFrequencia.add(0);
-					
 
-				} else 
-				{
-					if (frequency(filaFrequencia)==true) 
-					{
+				} else {
+					if (frequency(filaFrequencia) == true) {
 
 						filaFrequencia.removeFirst();
 						int pagRemovida = filaPaginas.removeFirst();
-						String processo= filaProcessos.removeFirst();
-						//frequencia.get(processo).remove(pagRemovida);
-						//tempoEntrada.get(processo).remove(pagRemovida);
-						//dadosFila.get(processo).remove(pagRemovida);
-						
-						
-						//dadosFila.get(nomeProcesso).add(pagAcessada);
-						//frequencia.get(nomeProcesso).put(pagAcessada, 0);
-						//tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+						String processo = filaProcessos.removeFirst();
+						// frequencia.get(processo).remove(pagRemovida);
+						// tempoEntrada.get(processo).remove(pagRemovida);
+						// dadosFila.get(processo).remove(pagRemovida);
+
+						// dadosFila.get(nomeProcesso).add(pagAcessada);
+						// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+						// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
 						filaPaginas.add(pagAcessada);
 						filaProcessos.add(nomeProcesso);
 						filaFrequencia.add(0);
-						
-					} else 
-					{
-						int pos=filaFrequencia.indexOf(Collections.max(filaFrequencia));
-						
-						int pagRemovida=filaPaginas.remove(pos);
-						String premovido=filaProcessos.remove(pos);
+
+					} else {
+						int pos = filaFrequencia.indexOf(Collections.max(filaFrequencia));
+
+						int pagRemovida = filaPaginas.remove(pos);
+						String premovido = filaProcessos.remove(pos);
 						filaFrequencia.remove(pos);
-					
-						//int pagRemovida=retorne(frequencia,tempoEntrada,nomeProcesso);						
-						//dadosFila.get(premovido).remove(pagRemovida);
-						//frequencia.get(premovido).remove(pagRemovida);
-						//tempoEntrada.get(premovido).remove(pagRemovida);
-						
-						
-						//dadosFila.get(nomeProcesso).add(pagAcessada);
-						//frequencia.get(nomeProcesso).put(pagAcessada, 0);
-						//tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+
+						// int pagRemovida=retorne(frequencia,tempoEntrada,nomeProcesso);
+						// dadosFila.get(premovido).remove(pagRemovida);
+						// frequencia.get(premovido).remove(pagRemovida);
+						// tempoEntrada.get(premovido).remove(pagRemovida);
+
+						// dadosFila.get(nomeProcesso).add(pagAcessada);
+						// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+						// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
 						filaPaginas.add(pagAcessada);
 						filaProcessos.add(nomeProcesso);
 						filaFrequencia.add(0);
-						
-						
-						
-						
-						
-						
-						
-						
-						
+
 					}
 				}
-			} else 
-			{
+			} else {
 
 				int freq = filaFrequencia.get(filaPaginas.indexOf(pagAcessada));
 				freq++;
@@ -131,26 +110,10 @@ public class Mfu extends AlgoritmoDeGerencia {
 		}
 
 		System.out.println(totalErros);
-		
-		
+
 		return (double) totalErros / entrada.getSequencia().size();
 
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
 
 	// Alocacao igual substitui��o local
 
@@ -159,48 +122,34 @@ public class Mfu extends AlgoritmoDeGerencia {
 		int totalQuadros = 0;
 		HashMap<String, Queue<Integer>> filaPaginas = new HashMap<>();
 		HashMap<String, HashMap<Integer, Integer>> frequencia = new HashMap<>();
-		HashMap<String, HashMap<Integer,Integer>> tempoEntrada = new HashMap<>(); 
-		HashMap<String,Integer> tamanho= new HashMap<>();
-		
-	
-		if (entrada.getAlocacao().equals("Igual")) 
-		{
-			totalQuadros=entrada.getTamanhoQuadros()/entrada.getProcessos().size();
-			
-			
-			for(int i=0;i<entrada.getProcessos().size();i++)
-			{
+		HashMap<String, HashMap<Integer, Integer>> tempoEntrada = new HashMap<>();
+		HashMap<String, Integer> tamanho = new HashMap<>();
+
+		if (entrada.getAlocacao().equals("Igual")) {
+			totalQuadros = entrada.getTamanhoQuadros() / entrada.getProcessos().size();
+
+			for (int i = 0; i < entrada.getProcessos().size(); i++) {
 				tamanho.put(entrada.getProcessos().get(i).getNome(), totalQuadros);
-				
+
 			}
-				
-		} 
-		else {
-			
-			int totalPaginas=0;
-			for(int i=0;i<entrada.getProcessos().size();i++)
-			{
-				totalPaginas+=entrada.getProcessos().get(i).getNumPaginas();
-				
+
+		} else {
+
+			int totalPaginas = 0;
+			for (int i = 0; i < entrada.getProcessos().size(); i++) {
+				totalPaginas += entrada.getProcessos().get(i).getNumPaginas();
+
 			}
-			
-			for(int i=0;i<entrada.getProcessos().size();i++)
-			{
-				totalQuadros=(entrada.getProcessos().get(i).getNumPaginas()/totalPaginas)*entrada.getTamanhoQuadros();
+
+			for (int i = 0; i < entrada.getProcessos().size(); i++) {
+				totalQuadros = (entrada.getProcessos().get(i).getNumPaginas() / totalPaginas)
+						* entrada.getTamanhoQuadros();
 				tamanho.put(entrada.getProcessos().get(i).getNome(), totalQuadros);
-				
+
 			}
-			
-			
-			
-			
-			
+
 		}
 
-		
-		
-		
-		
 		for (int i = 0; i < entrada.getProcessos().size(); i++) {
 			filaPaginas.put(entrada.getProcessos().get(i).getNome(), new LinkedList<>());
 			frequencia.put(entrada.getProcessos().get(i).getNome(), new HashMap<>());
@@ -211,46 +160,38 @@ public class Mfu extends AlgoritmoDeGerencia {
 			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
 			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
 
-			if (filaPaginas.get(nomeProcesso).contains(pagAcessada) == false) 
-			{
+			if (filaPaginas.get(nomeProcesso).contains(pagAcessada) == false) {
 				totalErros++;
 
-				if (filaPaginas.get(nomeProcesso).size() < tamanho.get(nomeProcesso)) 
-				{
+				if (filaPaginas.get(nomeProcesso).size() < tamanho.get(nomeProcesso)) {
 
 					filaPaginas.get(nomeProcesso).add(pagAcessada);
 					frequencia.get(nomeProcesso).put(pagAcessada, 0);
 					tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
 
-				} else 
-				{
-					if (frequency(frequencia, nomeProcesso)==false) 
-					{
+				} else {
+					if (frequency(frequencia, nomeProcesso) == false) {
 
 						int pagRemovida = filaPaginas.get(nomeProcesso).remove();
 						frequencia.get(nomeProcesso).remove(pagRemovida);
 						tempoEntrada.get(nomeProcesso).remove(pagRemovida);
 						filaPaginas.get(nomeProcesso).add(pagAcessada);
-						frequencia.get(nomeProcesso).put(pagAcessada,0);
-						tempoEntrada.get(nomeProcesso).put(pagAcessada,i);
-						
-					
-					} else 
-					{
+						frequencia.get(nomeProcesso).put(pagAcessada, 0);
+						tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
 
-						int pagRemovida=retorne(frequencia,tempoEntrada,nomeProcesso);						
+					} else {
+
+						int pagRemovida = retorne(frequencia, tempoEntrada, nomeProcesso);
 						filaPaginas.get(nomeProcesso).remove(pagRemovida);
 						frequencia.get(nomeProcesso).remove(pagRemovida);
 						tempoEntrada.get(nomeProcesso).remove(pagRemovida);
 						filaPaginas.get(nomeProcesso).add(pagAcessada);
-						frequencia.get(nomeProcesso).put(pagAcessada,0);
-						tempoEntrada.get(nomeProcesso).put(pagAcessada,i);
-						
-						
+						frequencia.get(nomeProcesso).put(pagAcessada, 0);
+						tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+
 					}
 				}
-			} else 
-			{
+			} else {
 
 				int freq = frequencia.get(nomeProcesso).get(pagAcessada);
 				freq++;
@@ -281,26 +222,22 @@ public class Mfu extends AlgoritmoDeGerencia {
 
 		}
 
-		
-		
-		
-		
-		
 		return chave;
 	}
 
-	private int retorne(HashMap<String, HashMap<Integer, Integer>> map,HashMap<String, HashMap<Integer, Integer>> time ,String process) {
+	private int retorne(HashMap<String, HashMap<Integer, Integer>> map, HashMap<String, HashMap<Integer, Integer>> time,
+			String process) {
 
 		HashMap<Integer, Integer> freq = map.get(process);
 		ArrayList<Integer> a = new ArrayList<>();
-		HashMap<Integer, Integer> timeEntry=time.get(process);
-		
+		HashMap<Integer, Integer> timeEntry = time.get(process);
+
 		for (Integer i : freq.keySet()) {
 			a.add(freq.get(i));
 		}
 
 		Collections.sort(a);
-		TreeMap<Integer,Integer> t= new TreeMap<>();
+		TreeMap<Integer, Integer> t = new TreeMap<>();
 		for (Integer i : freq.keySet()) {
 			if (freq.get(i) == a.get(a.size() - 1)) {
 				t.put(timeEntry.get(i), i);

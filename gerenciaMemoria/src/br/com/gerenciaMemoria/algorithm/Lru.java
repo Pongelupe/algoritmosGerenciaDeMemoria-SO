@@ -13,7 +13,7 @@ import br.com.gerenciaMemoria.model.Processo;
 public class Lru extends AlgoritmoDeGerencia {
 
 	private int totalErros = 0;
-	private final int tamanhoQuadros = entrada.getTamanhoQuadros();
+	private int tamanhoQuadros = entrada.getTamanhoQuadros();
 	private int quantidadeProcessos = entrada.quantidadeProcessos();
 	private List<Processo> processos = entrada.getProcessos();
 	private int requisicoes = entrada.getSequencia().size();
@@ -56,25 +56,23 @@ public class Lru extends AlgoritmoDeGerencia {
 					totalErros++;
 					Integer key = mapFrequenciaAcesso.entrySet().stream()
 							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-					memoriaProcesso.remove(key);
 
+					memoriaProcesso.remove(key);
 					mapFrequenciaAcesso.remove(key);
 
 					memoriaProcesso.add(pagAcessada);
-					mapFrequenciaAcesso.put(pagAcessada, 0);
 
-				} else {
-					mapFrequenciaAcesso.put(pagAcessada, 0);
 				}
+
+				mapFrequenciaAcesso.put(pagAcessada, 0);
 
 			} else {
 				if (!memoriaProcesso.contains(pagAcessada)) {
 					totalErros++;
 					memoriaProcesso.add(pagAcessada);
-					mapFrequenciaAcesso.put(pagAcessada, 0);
-				} else {
-					mapFrequenciaAcesso.put(pagAcessada, 0);
 				}
+
+				mapFrequenciaAcesso.put(pagAcessada, 0);
 			}
 
 		}
@@ -82,13 +80,44 @@ public class Lru extends AlgoritmoDeGerencia {
 		return (double) totalErros / requisicoes;
 	}
 
-	private void envelheceMap(Map<Integer, Integer> map) {
+	private <T> void envelheceMap(Map<T, Integer> map) {
 		map.forEach((k, v) -> map.put(k, ++v));
 	}
 
 	private double algoritmoSubstGlobal() {
-		// TODO Auto-generated method stub
-		return 0;
+		tamanhoQuadros = getMemoria();
+		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
+		HashMap<NoSequencia, Integer> mapFrequenciaAcesso = new HashMap<>();
+
+		for (int i = 0; i < requisicoes; i++) {
+			NoSequencia noAcessado = entrada.getSequencia().get(i);
+
+			envelheceMap(mapFrequenciaAcesso);
+
+			if (memoria.size() == tamanhoQuadros) {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					NoSequencia key = mapFrequenciaAcesso.entrySet().stream()
+							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+					memoria.remove(key);
+					mapFrequenciaAcesso.remove(key);
+
+					memoria.add(noAcessado);
+					mapFrequenciaAcesso.put(noAcessado, 0);
+				} else {
+					mapFrequenciaAcesso.put(noAcessado, 0);
+				}
+
+			} else {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					memoria.add(noAcessado);
+				}
+				mapFrequenciaAcesso.put(noAcessado, 0);
+			}
+		}
+
+		return (double) totalErros / requisicoes;
 	}
 
 	@Override

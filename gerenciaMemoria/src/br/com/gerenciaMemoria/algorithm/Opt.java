@@ -92,14 +92,14 @@ public class Opt extends AlgoritmoDeGerencia {
 			fila.remove(0);
 
 			if (memoria.size() == tamanhoQuadros) {
-				if (!memoria.contains(pagAcessada)) {
+				if (!isEmMemoria(memoria, pagAcessada)) {
 					totalErros++;
 					int paginaRemovida = decideQualTirar(fila, pagAcessada, memoria);
 					memoria.remove(paginaRemovida);
 					memoria.add(pagAcessada);
 				}
 			} else {
-				if (!memoria.contains(pagAcessada)) {
+				if (!isEmMemoria(memoria, pagAcessada)) {
 					totalErros++;
 					memoria.add(pagAcessada);
 				}
