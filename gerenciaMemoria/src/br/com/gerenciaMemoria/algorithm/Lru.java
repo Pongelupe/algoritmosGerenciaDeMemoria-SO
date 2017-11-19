@@ -92,6 +92,7 @@ public class Lru extends AlgoritmoDeGerencia {
 		for (int i = 0; i < requisicoes; i++) {
 			NoSequencia noAcessado = entrada.getSequencia().get(i);
 
+			mapFrequenciaAcesso.put(noAcessado, 0);
 			envelheceMap(mapFrequenciaAcesso);
 
 			if (memoria.size() == tamanhoQuadros) {
@@ -99,13 +100,11 @@ public class Lru extends AlgoritmoDeGerencia {
 					totalErros++;
 					NoSequencia key = mapFrequenciaAcesso.entrySet().stream()
 							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-					memoria.remove(key);
-					mapFrequenciaAcesso.remove(key);
 
+					mapFrequenciaAcesso.remove(key);
+					memoria.remove(key);
 					memoria.add(noAcessado);
-					mapFrequenciaAcesso.put(noAcessado, 0);
-				} else {
-					mapFrequenciaAcesso.put(noAcessado, 0);
+
 				}
 
 			} else {
@@ -113,8 +112,9 @@ public class Lru extends AlgoritmoDeGerencia {
 					totalErros++;
 					memoria.add(noAcessado);
 				}
-				mapFrequenciaAcesso.put(noAcessado, 0);
+
 			}
+
 		}
 
 		return (double) totalErros / requisicoes;

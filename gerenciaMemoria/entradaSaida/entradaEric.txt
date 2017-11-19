@@ -1,9 +1,9 @@
-﻿Tamanho(quadros)=6
+﻿﻿Tamanho(quadros)=6
 Processos(páginas):
 P1=5
 P2=4
 P3=5;
-Alocação=Igual
+Alocação=Proporcional
 Substituição=Local
 Sequência:
 P1,1

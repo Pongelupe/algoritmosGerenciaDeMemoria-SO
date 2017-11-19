@@ -15,7 +15,7 @@ import br.com.gerenciaMemoria.model.Processo;
 public class Opt extends AlgoritmoDeGerencia {
 
 	private int totalErros = 0;
-	private final int tamanhoQuadros = entrada.getTamanhoQuadros();
+	private int tamanhoQuadros = entrada.getTamanhoQuadros();
 	private int quantidadeProcessos = entrada.quantidadeProcessos();
 	private List<Processo> processos = entrada.getProcessos();
 	private int requisicoes = entrada.getSequencia().size();
@@ -82,6 +82,7 @@ public class Opt extends AlgoritmoDeGerencia {
 	}
 
 	private double algoritmoSubstGlobal() {
+		tamanhoQuadros = getMemoria();
 		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
 		ArrayList<Integer> fila = new ArrayList<Integer>();
 		entrada.getSequencia().forEach(no -> fila.add(no.getPaginaAcessada()));

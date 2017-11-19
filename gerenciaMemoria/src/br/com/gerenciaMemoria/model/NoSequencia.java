@@ -35,4 +35,32 @@ public class NoSequencia {
 		return "NoSequencia [processo=" + processo + ", paginaAcessada=" + paginaAcessada + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + paginaAcessada;
+		result = prime * result + ((processo == null) ? 0 : processo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NoSequencia other = (NoSequencia) obj;
+		if (paginaAcessada != other.paginaAcessada)
+			return false;
+		if (processo == null) {
+			if (other.processo != null)
+				return false;
+		} else if (!processo.equals(other.processo))
+			return false;
+		return true;
+	}
+
 }

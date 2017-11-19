@@ -64,7 +64,7 @@ public abstract class AlgoritmoDeGerencia {
 		int tamanhoQuadros = entrada.getTamanhoQuadros();
 		if (isAlocacaoIgual()) {
 			int divisao = tamanhoQuadros / entrada.quantidadeProcessos();
-			tamMemoria = divisao * (tamanhoQuadros % entrada.quantidadeProcessos());
+			tamMemoria = entrada.quantidadeProcessos() * divisao;
 
 		} else {
 			for (Processo p : entrada.getProcessos())
@@ -73,7 +73,7 @@ public abstract class AlgoritmoDeGerencia {
 
 		}
 
-		return tamanhoQuadros - tamMemoria;
+		return tamMemoria;
 	}
 
 }
