@@ -60,7 +60,7 @@ public class GerenciaSaida {
 		String saida = gerarSaida(new StringBuilder());
 		System.out.println(saida + "\n-----------");
 
-		PrintWriter writer = new PrintWriter(new File("saida.txt"), "UTF-8");
+		PrintWriter writer = new PrintWriter(new File("entradaSaida/saida.txt"), "UTF-8");
 		writer.println(saida);
 		writer.close();
 

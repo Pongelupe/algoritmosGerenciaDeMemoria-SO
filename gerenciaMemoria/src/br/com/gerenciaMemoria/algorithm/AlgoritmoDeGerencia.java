@@ -73,7 +73,7 @@ public abstract class AlgoritmoDeGerencia {
 
 		}
 
-		return tamanhoQuadros - tamMemoria;
+		return tamMemoria;
 	}
 
 }

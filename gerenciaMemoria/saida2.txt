@@ -1,7 +1,0 @@
-Requisições=4
-TaxasDeErros:
-FIFO=0,80
-OPT=0,60
-LRU=0,80
-LFU=0,67
-MFU=0,80
