@@ -12,14 +12,46 @@ public class My extends AlgoritmoDeGerencia {
 		super(entrada, NomeAlgoritmo.MY);
 	}
 
-	// substitui��o global
+
 	public double taxaErroGlobal() {
 		int totalErros = 0;
 		Stack<Integer> pilhaPagina = new Stack<>();
 		HashMap<String, Stack<Integer>> pilhaControl = new HashMap<>();
 		Stack<String> pilhaProcesso = new Stack<>();
-
-		for (int i = 0; i < entrada.getProcessos().size(); i++) {
+		int totalQuadros=0;
+	
+		if (entrada.getAlocacao().equals("Igual")) 
+		{
+			totalQuadros=entrada.getTamanhoQuadros()/entrada.getProcessos().size();
+			totalQuadros=totalQuadros*entrada.getProcessos().size();
+		} 
+		
+		
+		else if(entrada.getAlocacao().equals("Proporcional"))
+		{
+			
+			int totalPaginas=0;
+			for(int i=0;i<entrada.getProcessos().size();i++)
+			{
+				totalPaginas+=entrada.getProcessos().get(i).getNumPaginas();
+			}
+		
+			int soma=0;
+			for(int i=0;i<entrada.getProcessos().size();i++)
+			{
+				int totalPaginasPr=entrada.getProcessos().get(i).getNumPaginas();
+				totalQuadros=(int) ((double)totalPaginasPr/totalPaginas*totalQuadros);
+				soma+=totalQuadros;
+			}
+			
+			totalQuadros=soma;
+			
+		}
+			
+		
+		
+		for (int i = 0; i < entrada.getProcessos().size(); i++) 
+		{
 			pilhaControl.put(entrada.getProcessos().get(i).getNome(), new Stack<Integer>());
 		}
 

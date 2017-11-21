@@ -108,7 +108,7 @@ public class Fifo extends AlgoritmoDeGerencia {
 	@Override
 	public double getTaxaErros() {
 
-		return isSubstituicaoGlobal() ? this.taxaErroGlobal() : this.taxaErroIgual();
+		return this.taxaErroIgual();
 	}
 
 }
