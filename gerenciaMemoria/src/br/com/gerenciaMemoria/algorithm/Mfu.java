@@ -8,9 +8,14 @@ import java.util.Queue;
 import java.util.TreeMap;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 
 public class Mfu extends AlgoritmoDeGerencia {
+
+	private int totalErros = 0;
+	private int tamanhoQuadros = entrada.getTamanhoQuadros();
+	private int requisicoes = entrada.getSequencia().size();
 
 	public Mfu(DadosEntradaAlgoritmo entrada) {
 		super(entrada, NomeAlgoritmo.MFU);
@@ -51,77 +56,78 @@ public class Mfu extends AlgoritmoDeGerencia {
 
 	}
 
-	public double taxaErroGlobal() {
-		int totalErros = 0;
-
-		LinkedList<Integer> filaPaginas = new LinkedList<>();
-		LinkedList<String> filaProcessos = new LinkedList<>();
-		HashMap<String, TreeMap<Integer, Integer>> frequencia = new HashMap<>();
-		HashMap<String, TreeMap<Integer, Integer>> tempoEntrada = new HashMap<>();
-
-		for (int i = 0; i < entrada.getProcessos().size(); i++) {
-			frequencia.put(entrada.getProcessos().get(i).getNome(), new TreeMap<>());
-			tempoEntrada.put(entrada.getProcessos().get(i).getNome(), new TreeMap<>());
-		}
-
-		for (int i = 0; i < entrada.getSequencia().size(); i++) {
-			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
-			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
-
-			if (tempoEntrada.get(nomeProcesso).containsKey(pagAcessada) == false) {
-
-				if (filaPaginas.size() < entrada.getTamanhoQuadros()) {
-					frequencia.get(nomeProcesso).put(pagAcessada, 0);
-					filaPaginas.add(pagAcessada);
-					tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
-					filaProcessos.add(nomeProcesso);
-				}
-
-				else {
-
-					if (frequency(frequencia) == true) {
-
-						int pagRemovida = filaPaginas.removeFirst();
-						String processoRemovido = filaProcessos.removeFirst();
-						frequencia.get(processoRemovido).remove(pagRemovida);
-						tempoEntrada.get(processoRemovido).remove(pagRemovida);
-
-						frequencia.get(nomeProcesso).put(pagAcessada, 0);
-						filaPaginas.add(pagAcessada);
-						tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
-						filaProcessos.add(nomeProcesso);
-
-					} else {
-						int pagRemovida = retorne(frequencia, tempoEntrada);
-						filaPaginas.remove(pagRemovida);
-
-						String processoRemovido = filaProcessos.remove(filaPaginas.lastIndexOf(pagRemovida));
-						frequencia.get(processoRemovido).remove(pagRemovida);
-						tempoEntrada.get(processoRemovido).remove(pagRemovida);
-
-						frequencia.get(nomeProcesso).put(pagAcessada, 0);
-						filaPaginas.add(pagAcessada);
-						tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
-						filaProcessos.add(nomeProcesso);
-
-					}
-
-				}
-
-			}
-
-			else {
-				int freq = frequencia.get(nomeProcesso).get(pagAcessada);
-				freq++;
-				frequencia.get(nomeProcesso).put(pagAcessada, freq);
-
-			}
-
-		}
-
-		return (double) totalErros / entrada.getSequencia().size();
-
-	}
+	// public double taxaErroGlobal() {
+	// int totalErros = 0;
+	//
+	// LinkedList<Integer> filaPaginas = new LinkedList<>();
+	// LinkedList<String> filaProcessos = new LinkedList<>();
+	// HashMap<String, TreeMap<Integer, Integer>> frequencia = new HashMap<>();
+	// HashMap<String, TreeMap<Integer, Integer>> tempoEntrada = new HashMap<>();
+	//
+	// for (int i = 0; i < entrada.getProcessos().size(); i++) {
+	// frequencia.put(entrada.getProcessos().get(i).getNome(), new TreeMap<>());
+	// tempoEntrada.put(entrada.getProcessos().get(i).getNome(), new TreeMap<>());
+	// }
+	//
+	// for (int i = 0; i < entrada.getSequencia().size(); i++) {
+	// String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
+	// int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+	//
+	// if (tempoEntrada.get(nomeProcesso).containsKey(pagAcessada) == false) {
+	//
+	// if (filaPaginas.size() < entrada.getTamanhoQuadros()) {
+	// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+	// filaPaginas.add(pagAcessada);
+	// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+	// filaProcessos.add(nomeProcesso);
+	// }
+	//
+	// else {
+	//
+	// if (frequency(frequencia) == true) {
+	//
+	// int pagRemovida = filaPaginas.removeFirst();
+	// String processoRemovido = filaProcessos.removeFirst();
+	// frequencia.get(processoRemovido).remove(pagRemovida);
+	// tempoEntrada.get(processoRemovido).remove(pagRemovida);
+	//
+	// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+	// filaPaginas.add(pagAcessada);
+	// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+	// filaProcessos.add(nomeProcesso);
+	//
+	// } else {
+	// int pagRemovida = retorne(frequencia, tempoEntrada);
+	// filaPaginas.remove(pagRemovida);
+	//
+	// String processoRemovido =
+	// filaProcessos.remove(filaPaginas.lastIndexOf(pagRemovida));
+	// frequencia.get(processoRemovido).remove(pagRemovida);
+	// tempoEntrada.get(processoRemovido).remove(pagRemovida);
+	//
+	// frequencia.get(nomeProcesso).put(pagAcessada, 0);
+	// filaPaginas.add(pagAcessada);
+	// tempoEntrada.get(nomeProcesso).put(pagAcessada, i);
+	// filaProcessos.add(nomeProcesso);
+	//
+	// }
+	//
+	// }
+	//
+	// }
+	//
+	// else {
+	// int freq = frequencia.get(nomeProcesso).get(pagAcessada);
+	// freq++;
+	// frequencia.get(nomeProcesso).put(pagAcessada, freq);
+	//
+	// }
+	//
+	// }
+	//
+	// return (double) totalErros / entrada.getSequencia().size();
+	//
+	// }
 
 	// Alocacao igual substitui��o local
 
@@ -255,6 +261,48 @@ public class Mfu extends AlgoritmoDeGerencia {
 		}
 
 		return t.get(t.lastKey());
+	}
+
+	private double taxaErroGlobal() {
+		tamanhoQuadros = getTamMemoriaGlobal();
+		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
+		HashMap<NoSequencia, Integer> mapFrequenciaHit = new HashMap<>();
+
+		for (int i = 0; i < requisicoes; i++) {
+			NoSequencia noAcessado = entrada.getSequencia().get(i);
+
+			if (memoria.size() == tamanhoQuadros) {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					NoSequencia key = mapFrequenciaHit.entrySet().stream()
+							.max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+
+					memoria.remove(key);
+					memoria.add(noAcessado);
+
+					mapFrequenciaHit.remove(key);
+					mapFrequenciaHit.put(noAcessado, 0);
+
+				} else {
+					contabilizaHit(mapFrequenciaHit, noAcessado);
+				}
+
+			} else {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					memoria.add(noAcessado);
+					mapFrequenciaHit.put(noAcessado, 0);
+				} else {
+					contabilizaHit(mapFrequenciaHit, noAcessado);
+				}
+			}
+		}
+
+		return (double) totalErros / requisicoes;
+	}
+
+	private void contabilizaHit(HashMap<NoSequencia, Integer> mapFrequenciaHit, NoSequencia noAcessado) {
+		mapFrequenciaHit.put(noAcessado, 1 + mapFrequenciaHit.get(noAcessado));
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public abstract class AlgoritmoDeGerencia {
 		return isEmMemoria;
 	}
 
-	public int getMemoria() {
+	public int getTamMemoriaGlobal() {
 		int tamMemoria = 0;
 		int tamanhoQuadros = entrada.getTamanhoQuadros();
 		if (isAlocacaoIgual()) {
@@ -67,8 +67,13 @@ public abstract class AlgoritmoDeGerencia {
 			tamMemoria = entrada.quantidadeProcessos() * divisao;
 
 		} else {
+			int quantidadePaginasProcessos = 0;
+			
 			for (Processo p : entrada.getProcessos())
-				tamMemoria += getNumPaginasProcessoProporcional(entrada.getSequencia().size(), tamanhoQuadros,
+				quantidadePaginasProcessos += p.getNumPaginas();
+
+			for (Processo p : entrada.getProcessos())
+				tamMemoria += getNumPaginasProcessoProporcional(quantidadePaginasProcessos, tamanhoQuadros,
 						p.getNumPaginas());
 
 		}

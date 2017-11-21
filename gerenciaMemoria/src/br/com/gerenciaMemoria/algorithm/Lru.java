@@ -85,7 +85,7 @@ public class Lru extends AlgoritmoDeGerencia {
 	}
 
 	private double algoritmoSubstGlobal() {
-		tamanhoQuadros = getMemoria();
+		tamanhoQuadros = getTamMemoriaGlobal();
 		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
 		HashMap<NoSequencia, Integer> mapFrequenciaAcesso = new HashMap<>();
 
@@ -104,7 +104,6 @@ public class Lru extends AlgoritmoDeGerencia {
 					mapFrequenciaAcesso.remove(key);
 					memoria.remove(key);
 					memoria.add(noAcessado);
-
 				}
 
 			} else {

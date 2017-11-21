@@ -82,7 +82,7 @@ public class Opt extends AlgoritmoDeGerencia {
 	}
 
 	private double algoritmoSubstGlobal() {
-		tamanhoQuadros = getMemoria();
+		tamanhoQuadros = getTamMemoriaGlobal();
 		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
 		ArrayList<Integer> fila = new ArrayList<Integer>();
 		entrada.getSequencia().forEach(no -> fila.add(no.getPaginaAcessada()));
