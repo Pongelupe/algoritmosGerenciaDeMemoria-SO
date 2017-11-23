@@ -12,46 +12,37 @@ public class My extends AlgoritmoDeGerencia {
 		super(entrada, NomeAlgoritmo.MY);
 	}
 
-
 	public double taxaErroGlobal() {
 		int totalErros = 0;
 		Stack<Integer> pilhaPagina = new Stack<>();
 		HashMap<String, Stack<Integer>> pilhaControl = new HashMap<>();
 		Stack<String> pilhaProcesso = new Stack<>();
-		int totalQuadros=0;
-	
-		if (entrada.getAlocacao().equals("Igual")) 
-		{
-			totalQuadros=entrada.getTamanhoQuadros()/entrada.getProcessos().size();
-			totalQuadros=totalQuadros*entrada.getProcessos().size();
-		} 
-		
-		
-		else if(entrada.getAlocacao().equals("Proporcional"))
-		{
-			
-			int totalPaginas=0;
-			for(int i=0;i<entrada.getProcessos().size();i++)
-			{
-				totalPaginas+=entrada.getProcessos().get(i).getNumPaginas();
-			}
-		
-			int soma=0;
-			for(int i=0;i<entrada.getProcessos().size();i++)
-			{
-				int totalPaginasPr=entrada.getProcessos().get(i).getNumPaginas();
-				totalQuadros=(int) ((double)totalPaginasPr/totalPaginas*totalQuadros);
-				soma+=totalQuadros;
-			}
-			
-			totalQuadros=soma;
-			
+		int totalQuadros = 0;
+
+		if (entrada.getAlocacao().equals("Igual")) {
+			totalQuadros = entrada.getTamanhoQuadros() / entrada.getProcessos().size();
+			totalQuadros = totalQuadros * entrada.getProcessos().size();
 		}
-			
-		
-		
-		for (int i = 0; i < entrada.getProcessos().size(); i++) 
-		{
+
+		else if (entrada.getAlocacao().equals("Proporcional")) {
+
+			int totalPaginas = 0;
+			for (int i = 0; i < entrada.getProcessos().size(); i++) {
+				totalPaginas += entrada.getProcessos().get(i).getNumPaginas();
+			}
+
+			int soma = 0;
+			for (int i = 0; i < entrada.getProcessos().size(); i++) {
+				int totalPaginasPr = entrada.getProcessos().get(i).getNumPaginas();
+				totalQuadros = (int) ((double) totalPaginasPr / totalPaginas * totalQuadros);
+				soma += totalQuadros;
+			}
+
+			totalQuadros = soma;
+
+		}
+
+		for (int i = 0; i < entrada.getProcessos().size(); i++) {
 			pilhaControl.put(entrada.getProcessos().get(i).getNome(), new Stack<Integer>());
 		}
 
@@ -90,7 +81,7 @@ public class My extends AlgoritmoDeGerencia {
 	 * 
 	 */
 
-	public double taxaErroIgual() {
+	public double taxaErroLocal() {
 		int totalErros = 0;
 		int totalQuadros = 0;
 		int totalPaginas = 0;
@@ -143,7 +134,7 @@ public class My extends AlgoritmoDeGerencia {
 	@Override
 	public double getTaxaErros() {
 
-		return isSubstituicaoGlobal() ? this.taxaErroGlobal() : this.taxaErroIgual();
+		return isSubstituicaoGlobal() ? this.taxaErroGlobal() : this.taxaErroLocal();
 	}
 
 }

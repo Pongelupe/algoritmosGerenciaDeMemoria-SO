@@ -35,8 +35,8 @@ public abstract class AlgoritmoDeGerencia {
 		return entrada.getSubstituicao().equals("Global");
 	}
 
-	public int getNumPaginasProcessoProporcional(int requisicoes, int tamanhoQuadros, int numPaginasProcesso) {
-		double coefiente = (double) numPaginasProcesso / requisicoes;
+	public int getNumPaginasProcessoProporcional(int tamanhoQuadros, int numPaginasProcesso) {
+		double coefiente = (double) numPaginasProcesso / getQuantidadePaginasProcessos();
 		int numPags = (int) (coefiente * tamanhoQuadros);
 		return numPags <= 0 ? 1 : numPags;
 	}
@@ -67,18 +67,20 @@ public abstract class AlgoritmoDeGerencia {
 			tamMemoria = entrada.quantidadeProcessos() * divisao;
 
 		} else {
-			int quantidadePaginasProcessos = 0;
 
 			for (Processo p : entrada.getProcessos())
-				quantidadePaginasProcessos += p.getNumPaginas();
-
-			for (Processo p : entrada.getProcessos())
-				tamMemoria += getNumPaginasProcessoProporcional(quantidadePaginasProcessos, tamanhoQuadros,
-						p.getNumPaginas());
+				tamMemoria += getNumPaginasProcessoProporcional(tamanhoQuadros, p.getNumPaginas());
 
 		}
 
 		return tamMemoria;
+	}
+
+	private int getQuantidadePaginasProcessos() {
+		int quantidadePaginasProcessos = 0;
+		for (Processo p : entrada.getProcessos())
+			quantidadePaginasProcessos += p.getNumPaginas();
+		return quantidadePaginasProcessos;
 	}
 
 }

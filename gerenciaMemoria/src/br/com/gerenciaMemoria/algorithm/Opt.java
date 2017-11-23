@@ -3,7 +3,6 @@ package br.com.gerenciaMemoria.algorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +35,7 @@ public class Opt extends AlgoritmoDeGerencia {
 			Processo processo = processos.get(i);
 			String nomeProcesso = processo.getNome();
 
-			LinkedList<Integer> queue = new LinkedList<Integer>();
+			ArrayList<Integer> queue = new ArrayList<Integer>();
 
 			entrada.getSequencia().stream().filter(no -> no.getProcesso().equals(nomeProcesso))
 					.collect(Collectors.toList()).forEach(no -> {
@@ -44,7 +43,7 @@ public class Opt extends AlgoritmoDeGerencia {
 					});
 
 			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso
-					: getNumPaginasProcessoProporcional(requisicoes, tamanhoQuadros, processo.getNumPaginas());
+					: getNumPaginasProcessoProporcional(tamanhoQuadros, processo.getNumPaginas());
 			mapProcessos.put(nomeProcesso, queue);
 			memoriaLocal.put(nomeProcesso, new ArrayList<Integer>(numQuadrosPorProcesso));
 			mapNumQuadros.put(nomeProcesso, numQuadrosPorProcesso);
@@ -52,13 +51,13 @@ public class Opt extends AlgoritmoDeGerencia {
 
 		for (int i = 0; i < requisicoes; i++) {
 			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
-			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
+			Integer pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
 
 			List<Integer> filaTotal = mapProcessos.get(nomeProcesso);
 			List<Integer> memoriaProcesso = memoriaLocal.get(nomeProcesso);
 			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso : mapNumQuadros.get(nomeProcesso);
 
-			filaTotal.remove(0);
+			filaTotal.remove(pagAcessada);
 
 			if (memoriaProcesso.size() == numQuadrosPorProcesso) {
 				if (!memoriaProcesso.contains(pagAcessada)) {
@@ -84,13 +83,13 @@ public class Opt extends AlgoritmoDeGerencia {
 	private double algoritmoSubstGlobal() {
 		tamanhoQuadros = getTamMemoriaGlobal();
 		ArrayList<NoSequencia> memoria = new ArrayList<NoSequencia>(tamanhoQuadros);
-		ArrayList<Integer> fila = new ArrayList<Integer>();
-		entrada.getSequencia().forEach(no -> fila.add(no.getPaginaAcessada()));
+		ArrayList<NoSequencia> fila = new ArrayList<NoSequencia>();
+		entrada.getSequencia().forEach(no -> fila.add(no.clone()));
 
 		for (int i = 0; i < requisicoes; i++) {
 			NoSequencia pagAcessada = entrada.getSequencia().get(i);
 
-			fila.remove(0);
+			fila.remove(pagAcessada);
 
 			if (memoria.size() == tamanhoQuadros) {
 				if (!isEmMemoria(memoria, pagAcessada)) {
@@ -110,17 +109,17 @@ public class Opt extends AlgoritmoDeGerencia {
 		return (double) totalErros / requisicoes;
 	}
 
-	private <T> int decideQualTirar(List<Integer> fila, T pagAcessada, List<T> memoria) {
+	private <T> int decideQualTirar(List<T> fila, T pagAcessada, List<T> memoria) {
 		HashMap<Integer, T> distanciasProcessos = new HashMap<Integer, T>();
 		ArrayList<Integer> distancias = new ArrayList<Integer>();
-		memoria.forEach(p -> {
-			if (fila.contains(p)) {
-				int distancia = fila.indexOf(p);
+		memoria.forEach(processo -> {
+			if (fila.contains(processo)) {
+				int distancia = fila.indexOf(processo);
 				distancias.add(distancia);
-				distanciasProcessos.put(distancia, p);
+				distanciasProcessos.put(distancia, processo);
 			} else {
 				distancias.add(Integer.MAX_VALUE);
-				distanciasProcessos.put(Integer.MAX_VALUE, p);
+				distanciasProcessos.put(Integer.MAX_VALUE, processo);
 			}
 		});
 

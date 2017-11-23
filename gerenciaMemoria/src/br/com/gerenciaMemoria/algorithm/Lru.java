@@ -34,7 +34,7 @@ public class Lru extends AlgoritmoDeGerencia {
 			String nomeProcesso = processo.getNome();
 
 			numQuadrosPorProcesso = isAlocacaoIgual() ? numQuadrosPorProcesso
-					: getNumPaginasProcessoProporcional(requisicoes, tamanhoQuadros, processo.getNumPaginas());
+					: getNumPaginasProcessoProporcional(tamanhoQuadros, processo.getNumPaginas());
 			memoriaLocal.put(nomeProcesso, new ArrayList<Integer>(numQuadrosPorProcesso));
 			mapNumQuadros.put(nomeProcesso, numQuadrosPorProcesso);
 			mapFreqProcessos.put(nomeProcesso, new HashMap<>());

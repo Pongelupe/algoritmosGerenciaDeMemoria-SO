@@ -42,7 +42,7 @@ public class Fifo extends AlgoritmoDeGerencia {
 
 	// substitui��o local
 
-	public double taxaErroIgual() {
+	public double taxaErroLocal() {
 		int totalErros = 0;
 		int totalQuadros = 0;
 		int totalPaginas = 0;
@@ -94,7 +94,7 @@ public class Fifo extends AlgoritmoDeGerencia {
 	@Override
 	public double getTaxaErros() {
 
-		return isSubstituicaoGlobal() ? taxaErroGlobal() : taxaErroIgual();
+		return isSubstituicaoGlobal() ? taxaErroGlobal() : taxaErroLocal();
 	}
 
 }

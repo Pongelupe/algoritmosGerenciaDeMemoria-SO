@@ -63,4 +63,8 @@ public class NoSequencia {
 		return true;
 	}
 
+	public NoSequencia clone() {
+		return new NoSequencia(processo, paginaAcessada);
+	}
+
 }
