@@ -1,11 +1,12 @@
 package br.com.gerenciaMemoria.algorithm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
+import br.com.gerenciaMemoria.model.NoSequencia;
 import br.com.gerenciaMemoria.model.NomeAlgoritmo;
 
 public class Fifo extends AlgoritmoDeGerencia {
@@ -14,51 +15,36 @@ public class Fifo extends AlgoritmoDeGerencia {
 		super(entrada, NomeAlgoritmo.FIFO);
 	}
 
-	// substitui��o global
 	public double taxaErroGlobal() {
 		int totalErros = 0;
-		Queue<Integer> filaPaginas = new LinkedList<>();
-		HashMap<String, ArrayList<Integer>> filaControl = new HashMap<>();
-		Queue<String> filaProcessos = new LinkedList<>();
+		int requisicoes = entrada.getSequencia().size();
+		int tamanhoQuadros = getTamMemoriaGlobal();
+		List<NoSequencia> memoria = new LinkedList<NoSequencia>();
 
-		for (int i = 0; i < entrada.getProcessos().size(); i++) {
-			filaControl.put(entrada.getProcessos().get(i).getNome(), new ArrayList<Integer>());
-		}
-
-		for (int i = 0; i < entrada.getNumeroRequisicoes(); i++) {
-			String nomeProcesso = entrada.getSequencia().get(i).getProcesso();
-			int pagAcessada = entrada.getSequencia().get(i).getPaginaAcessada();
-
-			if (!filaControl.get(nomeProcesso).contains(pagAcessada)) {
-				totalErros++;
-
-				if (filaProcessos.size() < entrada.getTamanhoQuadros()) {
-					filaPaginas.add(pagAcessada);
-					filaControl.get(nomeProcesso).add(pagAcessada);
-					filaProcessos.add(nomeProcesso);
-				} else {
-					int pagRemovida = filaPaginas.remove();
-					String processoRemovido = filaProcessos.remove();
-					filaControl.get(processoRemovido).remove(filaControl.get(processoRemovido).indexOf(pagRemovida));
-
-					filaPaginas.add(pagAcessada);
-					filaControl.get(nomeProcesso).add(pagAcessada);
-					filaProcessos.add(nomeProcesso);
-
+		for (int i = 0; i < requisicoes; i++) {
+			NoSequencia noAcessado = entrada.getSequencia().get(i);
+			if (memoria.size() == tamanhoQuadros) {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					memoria.remove(0);
+					memoria.add(noAcessado);
 				}
-
+			} else {
+				if (!isEmMemoria(memoria, noAcessado)) {
+					totalErros++;
+					memoria.add(noAcessado);
+				}
 			}
 		}
 
-		return (double) totalErros / entrada.getNumeroRequisicoes();
-
+		return (double) totalErros / requisicoes;
 	}
 
 	// substitui��o local
 
 	public double taxaErroIgual() {
 		int totalErros = 0;
-		int totalQuadros = 0; // entrada.getTamanhoQuadros() / entrada.getProcessos().size();
+		int totalQuadros = 0;
 		int totalPaginas = 0;
 		HashMap<String, Queue<Integer>> dadosFila = new HashMap<>();
 		HashMap<String, Integer> tamanho = new HashMap<>();
@@ -108,7 +94,7 @@ public class Fifo extends AlgoritmoDeGerencia {
 	@Override
 	public double getTaxaErros() {
 
-		return this.taxaErroIgual();
+		return isSubstituicaoGlobal() ? taxaErroGlobal() : taxaErroIgual();
 	}
 
 }

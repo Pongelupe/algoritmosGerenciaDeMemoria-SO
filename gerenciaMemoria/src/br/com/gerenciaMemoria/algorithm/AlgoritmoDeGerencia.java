@@ -1,6 +1,6 @@
 package br.com.gerenciaMemoria.algorithm;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import br.com.gerenciaMemoria.model.DadosEntradaAlgoritmo;
 import br.com.gerenciaMemoria.model.NoSequencia;
@@ -41,7 +41,7 @@ public abstract class AlgoritmoDeGerencia {
 		return numPags <= 0 ? 1 : numPags;
 	}
 
-	public boolean isEmMemoria(ArrayList<NoSequencia> memoria, NoSequencia noAcessado) {
+	public boolean isEmMemoria(List<NoSequencia> memoria, NoSequencia noAcessado) {
 		boolean flagEmMemoria = true;
 		boolean isEmMemoria = false;
 		int i = 0;
@@ -68,7 +68,7 @@ public abstract class AlgoritmoDeGerencia {
 
 		} else {
 			int quantidadePaginasProcessos = 0;
-			
+
 			for (Processo p : entrada.getProcessos())
 				quantidadePaginasProcessos += p.getNumPaginas();
 
