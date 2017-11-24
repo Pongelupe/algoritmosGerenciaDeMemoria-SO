@@ -60,9 +60,12 @@ public class GerenciaSaida {
 		String saida = gerarSaida(new StringBuilder());
 		System.out.println(saida + "\n-----------");
 
-		PrintWriter writer = new PrintWriter(new File("entradaSaida/saida.txt"), "UTF-8");
+		File arquivoSaida = new File("entradaSaida/saida.txt");
+		PrintWriter writer = new PrintWriter(arquivoSaida, "UTF-8");
 		writer.println(saida);
 		writer.close();
+
+		System.out.print("O arquivo de saída está em " + arquivoSaida.getAbsolutePath());
 
 	}
 
